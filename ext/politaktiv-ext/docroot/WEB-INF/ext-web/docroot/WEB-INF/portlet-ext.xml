@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
+
+    <portlet>
+        <portlet-name>101</portlet-name>
+        <display-name>Asset Publisher</display-name>
+        <portlet-class>com.liferay.portlet.StrutsPortlet</portlet-class>
+        <init-param>
+            <name>config-template</name>
+            <value>/html/portlet/asset_publisher/configuration.jsp</value>
+        </init-param>
+        <init-param>
+            <name>template-path</name>
+            <value>/html/portlet/asset_publisher/</value>
+        </init-param>
+        <init-param>
+            <name>view-action</name>
+            <value>/asset_publisher/view</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <resource-bundle>com.liferay.portlet.StrutsResourceBundle</resource-bundle>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+        <supported-public-render-parameter>categoryId</supported-public-render-parameter>
+        <supported-public-render-parameter>sortingField</supported-public-render-parameter>
+        <supported-public-render-parameter>sortingType</supported-public-render-parameter>
+        <supported-public-render-parameter>resetCur</supported-public-render-parameter>
+        <supported-public-render-parameter>tag</supported-public-render-parameter>
+        <supported-public-render-parameter>tags</supported-public-render-parameter>
+    </portlet>
+
+    <portlet>
+        <portlet-name>122</portlet-name>
+        <display-name>Asset Categories Navigation</display-name>
+        <portlet-class>com.liferay.portlet.StrutsPortlet</portlet-class>
+        <init-param>
+            <name>config-template</name>
+            <value>/html/portlet/asset_categories_navigation/configuration.jsp</value>
+        </init-param>
+        <init-param>
+            <name>template-path</name>
+            <value>/html/portlet/asset_categories_navigation/</value>
+        </init-param>
+        <init-param>
+            <name>view-action</name>
+            <value>/asset_categories_navigation/view</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <resource-bundle>com.liferay.portlet.StrutsResourceBundle</resource-bundle>
+        <security-role-ref>
+            <role-name>guest</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+        <supported-public-render-parameter>categoryId</supported-public-render-parameter>
+        <supported-public-render-parameter>resetCur</supported-public-render-parameter>
+        <supported-public-render-parameter>sortingField</supported-public-render-parameter>
+        <supported-public-render-parameter>sortingType</supported-public-render-parameter>
+    </portlet>
+
+
+    <public-render-parameter>
+        <identifier>sortingField</identifier>
+        <qname xmlns:x="http://www.liferay.com/public-render-parameters">x:sortingField</qname>
+    </public-render-parameter>
+
+    <public-render-parameter>
+        <identifier>sortingType</identifier>
+        <qname xmlns:x="http://www.liferay.com/public-render-parameters">x:sortingType</qname>
+    </public-render-parameter>
+
+
+</portlet-app>
