@@ -4,6 +4,10 @@
 <hook>
 
     <!--<portal-properties>portal.properties</portal-properties>-->
+
+    <language-properties>content/Language_de_DE.properties</language-properties>
+    <language-properties>content/Language_en_US.properties</language-properties>
+
     <custom-jsp-dir>/WEB-INF/custom_jsps</custom-jsp-dir>
 
 

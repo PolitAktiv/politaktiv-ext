@@ -18,6 +18,8 @@
 
 <%
 String redirect = ParamUtil.getString(request, "redirect");
+Boolean enableSorting = PrefsParamUtil.getBoolean(portletPreferences, request, "enableSorting");
+String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "dateForSorting", "");
 
 %>
 
@@ -31,6 +33,15 @@ String redirect = ParamUtil.getString(request, "redirect");
 		<aui:select label="vocabularies" name="preferences--allAssetVocabularies--">
 			<aui:option label="all" selected="<%= allAssetVocabularies %>" value="<%= true %>" />
 			<aui:option label="filter[action]" selected="<%= !allAssetVocabularies %>" value="<%= false %>" />
+		</aui:select>
+
+		<aui:input label="enable-sorting" name="preferences--enableSorting--" type="checkbox" value="<%= enableSorting %>" />
+
+		<aui:select inlineField="<%= true %>" inlineLabel="left" label="date-for-sorting" name="preferences--dateForSorting--">
+			<aui:option label="create-date" selected='<%= dateForSorting.equals("create-date") %>' value="create-date" />
+			<aui:option label="modified-date" selected='<%= dateForSorting.equals("modified-date") %>' value="modified-date" />
+			<aui:option label="publish-date" selected='<%= dateForSorting.equals("publish-date") %>' value="publish-date" />
+			<aui:option label="expiration-date" selected='<%= dateForSorting.equals("expiration-date") %>' value="expiration-date" />
 		</aui:select>
 
 		<aui:input name="preferences--assetVocabularyIds--" type="hidden" />
