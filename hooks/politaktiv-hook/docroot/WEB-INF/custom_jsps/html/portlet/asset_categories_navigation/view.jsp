@@ -75,8 +75,8 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
 					<c:if test="<%= field.equals(dateForSorting) && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
 				</a>
 				<%
-					portletURL.setParameter("sortingField", "priority");
-					if (field.equals("priority") && type.equals("ASC")) {
+					portletURL.setParameter("sortingField", "lastName");
+					if (field.equals("lastName") && type.equals("ASC")) {
 						portletURL.setParameter("sortingType", "DESC");
 					} else {
 						portletURL.setParameter("sortingType", "ASC");
@@ -84,14 +84,14 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
 				%>
 				<a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
 					class="asset-categories-sorting-type
-							<c:if test="<%= field.equals(\"priority\") %>">active</c:if>
-							<c:if test="<%= field.equals(\"priority\") && type.equals(\"ASC\") %>">asc</c:if>
-							<c:if test="<%= field.equals(\"priority\") && type.equals(\"DESC\") %>">desc</c:if>
+							<c:if test="<%= field.equals(\"lastName\") %>">active</c:if>
+							<c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>">asc</c:if>
+							<c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>">desc</c:if>
 						"
 				>
 					<liferay-ui:message key="portlet.categoriesNavigation.sorting.author" />
-					<c:if test="<%= field.equals(\"priority\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
-					<c:if test="<%= field.equals(\"priority\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
+					<c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
+					<c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
 				</a>
 				<style>
 					.asset-categories-sorting {

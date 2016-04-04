@@ -33,11 +33,13 @@ page import="com.liferay.portlet.dynamicdatamapping.util.DDMImpl" %><%@
 page import="com.liferay.portlet.dynamicdatamapping.util.DDMIndexerUtil" %><%@
 page import="com.liferay.portlet.messageboards.model.MBDiscussion" %><%@
 page import="com.liferay.portlet.portletdisplaytemplate.util.PortletDisplayTemplateConstants" %><%@
-page import="com.liferay.util.RSSUtil" %>
+page import="com.liferay.util.RSSUtil" %><%@
+page import="org.politactiv.portlet.asset.service.persistence.PolitactiveAssetEntryQuery" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="com.liferay.portlet.asset.service.persistence.AssetEntryQuery" %>
 
 <%
-String portletResource = ParamUtil.getString(request, "portletResource");
+	String portletResource = ParamUtil.getString(request, "portletResource");
 
 String selectionStyle = GetterUtil.getString(portletPreferences.getValue("selectionStyle", null), "dynamic");
 
@@ -63,7 +65,12 @@ long[] classNameIds = AssetPublisherUtil.getClassNameIds(portletPreferences, ava
 
 long[] classTypeIds = GetterUtil.getLongValues(portletPreferences.getValues("classTypeIds", null));
 
-AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
+
+PolitactiveAssetEntryQuery assetEntryQuery = new PolitactiveAssetEntryQuery();
+
+
+
+//	AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
 
 long[] allAssetCategoryIds = new long[0];
 String[] allAssetTagNames = new String[0];
@@ -77,10 +84,12 @@ boolean subtypeFieldsFilterEnabled = GetterUtil.getBoolean(portletPreferences.ge
 
 if (selectionStyle.equals("dynamic")) {
 	if (!ArrayUtil.contains(groupIds, scopeGroupId)) {
-		assetEntryQuery = AssetPublisherUtil.getAssetEntryQuery(portletPreferences, ArrayUtil.append(groupIds, scopeGroupId));
+		AssetEntryQuery originalAssetEntryQuery = AssetPublisherUtil.getAssetEntryQuery(portletPreferences, ArrayUtil.append(groupIds, scopeGroupId));
+		assetEntryQuery = new PolitactiveAssetEntryQuery(originalAssetEntryQuery);
 	}
 	else {
-		assetEntryQuery = AssetPublisherUtil.getAssetEntryQuery(portletPreferences, groupIds);
+		AssetEntryQuery originalAssetEntryQuery = AssetPublisherUtil.getAssetEntryQuery(portletPreferences, groupIds);
+		assetEntryQuery = new PolitactiveAssetEntryQuery(originalAssetEntryQuery);
 	}
 
 	allAssetTagNames = AssetPublisherUtil.getAssetTagNames(portletPreferences, scopeGroupId);
@@ -125,9 +134,6 @@ long assetCategoryId = ParamUtil.getLong(request, "categoryId");
 
     String sortingField = ParamUtil.getString(request, "sortingField");
     String sortingType = ParamUtil.getString(request, "sortingType");
-
-    System.out.println("READ sortingField="+sortingField);
-    System.out.println("READ sortingType="+sortingType);
 
 String assetCategoryTitle = null;
 String assetVocabularyTitle = null;
@@ -257,7 +263,7 @@ String socialBookmarksDisplayStyle = portletPreferences.getValue("socialBookmark
 String socialBookmarksDisplayPosition = portletPreferences.getValue("socialBookmarksDisplayPosition", "bottom");
 
 String defaultMetadataFields = StringPool.BLANK;
-String allMetadataFields = "create-date,modified-date,publish-date,expiration-date,priority,author,view-count,categories,tags";
+String allMetadataFields = "createDate,modifiedDate,publishDate,expirationDate,priority,author,view-count,categories,tags";
 
 String[] metadataFields = StringUtil.split(portletPreferences.getValue("metadataFields", defaultMetadataFields));
 

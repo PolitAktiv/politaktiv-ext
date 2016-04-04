@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<custom-sql>
+    <!--<sql id="com.ext.portlet.reports.service.persistence.ReportsEntryFinder.countByUserId">-->
+        <!--<![CDATA[ SELECT COUNT() AS COUNT_VALUE FROM ReportsEntry WHERE ReportsEntry.userId = ? ]]> </sql>-->
+</custom-sql>
