@@ -1,6 +1,5 @@
 package org.politactiv.portlet.asset.service.persistence;
 
-import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.dao.orm.*;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -29,19 +28,6 @@ public class PolitactiveAssetEntryFinderImpl
     @Override
     public List<AssetEntry> findEntries(AssetEntryQuery entryQuery)
             throws SystemException {
-
-//        _log.error("HELLO from finder got1!!!!!!!!!!!!!!!=" + entryQuery.getOrderByCol1());
-//
-
-        PolitactiveAssetEntryQuery politactiveAssetEntryQuery = new PolitactiveAssetEntryQuery(entryQuery);
-        BeanPropertiesUtil.copyProperties(entryQuery, politactiveAssetEntryQuery);
-
-//        _log.error("HELLO from finder got2!!!!!!!!!!!!!!!=" + politactiveAssetEntryQuery.getOrderByCol1());
-
-        PolitactiveAssetEntryQuery politactiveAssetEntryQuery2 = new PolitactiveAssetEntryQuery();
-        BeanPropertiesUtil.copyProperties(entryQuery, politactiveAssetEntryQuery2);
-//        _log.error("HELLO from finder got3!!!!!!!!!!!!!!!=" + politactiveAssetEntryQuery.getOrderByCol1());
-
 
         Session session = null;
 
@@ -122,9 +108,14 @@ public class PolitactiveAssetEntryFinderImpl
 
         if(entryQuery.getOrderByCol1().equals("categoryName")){
             sb.append(" LEFT JOIN ");
-            sb.append("User_ ON ");
-            sb.append("(User_.userId = ");
-            sb.append("AssetEntry.userId)");
+            sb.append("AssetEntries_AssetCategories ON ");
+            sb.append("(AssetEntries_AssetCategories.entryId = ");
+            sb.append("AssetEntry.entryId)");
+
+            sb.append(" LEFT JOIN ");
+            sb.append("AssetCategory ON ");
+            sb.append("(AssetCategory.categoryId = ");
+            sb.append("AssetEntries_AssetCategories.categoryId)");
         }
 
 
@@ -228,6 +219,8 @@ public class PolitactiveAssetEntryFinderImpl
             }else if(entryQuery.getOrderByCol1().equals("lastName")){
                 sb.append("User_.");
                 sb.append(entryQuery.getOrderByCol1());
+            }else if(entryQuery.getOrderByCol1().equals("categoryName")){
+                sb.append("AssetCategory.name");
             }else {
                 sb.append("AssetEntry.");
                 sb.append(entryQuery.getOrderByCol1());

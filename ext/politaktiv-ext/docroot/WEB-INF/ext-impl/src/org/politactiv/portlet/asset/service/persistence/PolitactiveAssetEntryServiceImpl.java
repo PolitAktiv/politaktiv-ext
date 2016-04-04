@@ -33,8 +33,6 @@ public class PolitactiveAssetEntryServiceImpl extends AssetEntryServiceImpl {
     public int getEntriesCount(AssetEntryQuery entryQuery)
             throws PortalException, SystemException {
 
-        _log.error("Hello from sericeImpl1 get count="+entryQuery.getOrderByCol1());
-
         AssetEntryQuery filteredEntryQuery = buildFilteredEntryQuery(
                 entryQuery);
 
@@ -149,7 +147,6 @@ public class PolitactiveAssetEntryServiceImpl extends AssetEntryServiceImpl {
     public List<AssetEntry> getEntries(AssetEntryQuery entryQuery)
     throws PortalException, SystemException {
 
-        _log.error("Hello from sericeImpl2 get Entries="+entryQuery.getOrderByCol1());
         AssetEntryQuery filteredEntryQuery = buildFilteredEntryQuery(
                 entryQuery);
 
