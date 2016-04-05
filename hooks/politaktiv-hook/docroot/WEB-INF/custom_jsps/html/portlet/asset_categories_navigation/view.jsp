@@ -22,7 +22,7 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
 
     long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplateId(displayStyleGroupId, displayStyle);
 %>
-
+<div class="categories-nav-container">
 <c:choose>
     <c:when test="<%= portletDisplayDDMTemplateId > 0 %>">
 
@@ -46,106 +46,139 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
         <%= PortletDisplayTemplateUtil.renderDDMTemplate(pageContext, portletDisplayDDMTemplateId, ddmTemplateAssetVocabularies) %>
     </c:when>
     <c:otherwise>
-        
-		<c:if test="<%= enableSorting %>">
-			<div class="asset-categories-sorting">
-				<liferay-ui:message key="portlet.categoriesNavigation.sorting.sortBy" />
-				<%
-					String field = ParamUtil.getString(request, "sortingField");
-					String type = ParamUtil.getString(request, "sortingType");
-					PortletURL portletURL = renderResponse.createRenderURL();
-	
-					portletURL.setParameter("categoryId", String.valueOf(ParamUtil.getLong(request, "categoryId")));
-					portletURL.setParameter("sortingField", dateForSorting);
-					if (field.equals(dateForSorting) && type.equals("ASC")) {
-						portletURL.setParameter("sortingType", "DESC");
-					} else {
-						portletURL.setParameter("sortingType", "ASC");
-					}
-				%>
-				<a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
-					class="asset-categories-sorting-type
-							<c:if test="<%= field.equals(dateForSorting) %>">active</c:if>
-							<c:if test="<%= field.equals(dateForSorting) && type.equals(\"ASC\") %>">asc</c:if>
-							<c:if test="<%= field.equals(dateForSorting) && type.equals(\"DESC\") %>">desc</c:if>
-						"
-				>
-					<liferay-ui:message key="portlet.categoriesNavigation.sorting.date" />
-					<c:if test="<%= field.equals(dateForSorting) && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
-					<c:if test="<%= field.equals(dateForSorting) && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
-				</a>
-				<%
-					portletURL.setParameter("sortingField", "lastName");
-					if (field.equals("lastName") && type.equals("ASC")) {
-						portletURL.setParameter("sortingType", "DESC");
-					} else {
-						portletURL.setParameter("sortingType", "ASC");
-					}
-				%>
-				<a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
-					class="asset-categories-sorting-type
-							<c:if test="<%= field.equals(\"lastName\") %>">active</c:if>
-							<c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>">asc</c:if>
-							<c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>">desc</c:if>
-						"
-				>
-					<liferay-ui:message key="portlet.categoriesNavigation.sorting.author" />
-					<c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
-					<c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
-				</a>
-				<%
-					portletURL.setParameter("sortingField", "categoryName");
-					if (field.equals("categoryName") && type.equals("ASC")) {
-						portletURL.setParameter("sortingType", "DESC");
-					} else {
-						portletURL.setParameter("sortingType", "ASC");
-					}
-				%>
-				<a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
-				   class="asset-categories-sorting-type
-							<c:if test="<%= field.equals(\"categoryName\") %>">active</c:if>
-							<c:if test="<%= field.equals(\"categoryName\") && type.equals(\"ASC\") %>">asc</c:if>
-							<c:if test="<%= field.equals(\"categoryName\") && type.equals(\"DESC\") %>">desc</c:if>
-						"
-				>
-					<liferay-ui:message key="portlet.categoriesNavigation.sorting.category" />
-					<c:if test="<%= field.equals(\"categoryName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
-					<c:if test="<%= field.equals(\"categoryName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if></a>
-				<style>
-					.asset-categories-sorting {
-						padding-bottom: 10px;
-					}
-					.asset-categories-sorting-type {
-						margin-left: 8px;
-					}
-					.asset-categories-sorting-type.active {
-						padding: 2px 8px;
-						border-radius: 10px;
-						background: #e3e3e3;
-					}
-					.asset-categories-sorting-type.active:hover {
-						background: #ccc;
-						text-decoration: none;
-					}
-					.asset-categories-sorting-type .icon-arrow-down,
-					.asset-categories-sorting-type .icon-arrow-up {
-						font-size: 10px;
-					}
-				</style>
-			</div>
-		</c:if>
-        <c:choose>
-            <c:when test="<%= allAssetVocabularies %>">
-                <liferay-ui:asset-categories-navigation
-                        hidePortletWhenEmpty="<%= true %>"
-                        />
-            </c:when>
-            <c:otherwise>
-                <liferay-ui:asset-categories-navigation
-                        hidePortletWhenEmpty="<%= true %>"
-                        vocabularyIds="<%= assetVocabularyIds %>"
-                        />
-            </c:otherwise>
-        </c:choose>
+
+        <c:if test="<%= enableSorting %>">
+            <div class="categories-nav-partition-header btn"><liferay-ui:message key="portlet.categoriesNavigation.sorting" /></div>
+            <div class="asset-categories-sorting categories-nav-partition-content toggler-content-collapsed">
+                <liferay-ui:message key="portlet.categoriesNavigation.sorting.sortBy" />
+                <%
+                    String field = ParamUtil.getString(request, "sortingField");
+                    String type = ParamUtil.getString(request, "sortingType");
+                    PortletURL portletURL = renderResponse.createRenderURL();
+
+                    portletURL.setParameter("categoryId", String.valueOf(ParamUtil.getLong(request, "categoryId")));
+                    portletURL.setParameter("sortingField", dateForSorting);
+                    if (field.equals(dateForSorting) && type.equals("ASC")) {
+                        portletURL.setParameter("sortingType", "DESC");
+                    } else {
+                        portletURL.setParameter("sortingType", "ASC");
+                    }
+                %>
+                <a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
+                    class="asset-categories-sorting-type
+                            <c:if test="<%= field.equals(dateForSorting) %>">active</c:if>
+                            <c:if test="<%= field.equals(dateForSorting) && type.equals(\"ASC\") %>">asc</c:if>
+                            <c:if test="<%= field.equals(dateForSorting) && type.equals(\"DESC\") %>">desc</c:if>
+                        "
+                >
+                    <liferay-ui:message key="portlet.categoriesNavigation.sorting.date" />
+                    <c:if test="<%= field.equals(dateForSorting) && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
+                    <c:if test="<%= field.equals(dateForSorting) && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
+                </a>
+                <%
+                    portletURL.setParameter("sortingField", "lastName");
+                    if (field.equals("lastName") && type.equals("ASC")) {
+                        portletURL.setParameter("sortingType", "DESC");
+                    } else {
+                        portletURL.setParameter("sortingType", "ASC");
+                    }
+                %>
+                <a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
+                    class="asset-categories-sorting-type
+                            <c:if test="<%= field.equals(\"lastName\") %>">active</c:if>
+                            <c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>">asc</c:if>
+                            <c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>">desc</c:if>
+                        "
+                >
+                <liferay-ui:message key="portlet.categoriesNavigation.sorting.author" />
+                <c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
+                <c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
+                </a>
+                <%
+                    portletURL.setParameter("sortingField", "categoryName");
+                    if (field.equals("categoryName") && type.equals("ASC")) {
+                        portletURL.setParameter("sortingType", "DESC");
+                    } else {
+                        portletURL.setParameter("sortingType", "ASC");
+                    }
+                %>
+                <a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
+                   class="asset-categories-sorting-type
+                            <c:if test="<%= field.equals(\"categoryName\") %>">active</c:if>
+                            <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"ASC\") %>">asc</c:if>
+                            <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"DESC\") %>">desc</c:if>
+                        "
+                >
+                <liferay-ui:message key="portlet.categoriesNavigation.sorting.category" />
+                <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
+                <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if></a>
+                <style>
+                    .btn.categories-nav-partition-header {
+                        display: block;
+                        text-align: left;
+                        margin-bottom: 10px;
+                    }
+                    .btn.categories-nav-partition-header.toggler-header-expanded {
+                        text-decoration: none;
+                        background-position: 0 -15px;
+                        background-color: #eaeaea;
+                        color: #333;
+                    }
+                    .asset-categories-sorting {
+                        padding: 0 10px 10px;
+                    }
+                    .asset-categories-sorting-type {
+                        margin-left: 8px;
+                    }
+                    .asset-categories-sorting-type.active {
+                        padding: 2px 8px;
+                        border-radius: 10px;
+                        background: #e3e3e3;
+                    }
+                    .asset-categories-sorting-type.active:hover {
+                        background: #ccc;
+                        text-decoration: none;
+                    }
+                    .asset-categories-sorting-type .icon-arrow-down,
+                    .asset-categories-sorting-type .icon-arrow-up {
+                        font-size: 10px;
+                    }
+                </style>
+                <aui:script use="aui-toggler">
+                    new A.TogglerDelegate({
+                        closeAllOnExpand: true,
+                        container: '.categories-nav-container',
+                        header: '.categories-nav-partition-header',
+                        content: '.categories-nav-partition-content',
+                        expanded: false
+                    });
+                </aui:script>
+            </div>
+        </c:if>
+
+        <c:if test="<%= enableSorting %>">
+            <div class="categories-nav-partition-header btn"><liferay-ui:message key="portlet.categoriesNavigation.filtering" /></div>
+            <div class="categories-nav-partition-content toggler-content-collapsed">
+        </c:if>
+
+                <c:choose>
+                    <c:when test="<%= allAssetVocabularies %>">
+                        <liferay-ui:asset-categories-navigation
+                                hidePortletWhenEmpty="<%= true %>"
+                                />
+                    </c:when>
+                    <c:otherwise>
+                        <liferay-ui:asset-categories-navigation
+                                hidePortletWhenEmpty="<%= true %>"
+                                vocabularyIds="<%= assetVocabularyIds %>"
+                                />
+                    </c:otherwise>
+                </c:choose>
+
+        <c:if test="<%= enableSorting %>">
+            </div>
+        </c:if>
+
     </c:otherwise>
 </c:choose>
+</div>
