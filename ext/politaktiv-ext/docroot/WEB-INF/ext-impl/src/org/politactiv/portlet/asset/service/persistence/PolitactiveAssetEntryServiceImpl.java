@@ -9,6 +9,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.security.auth.PrincipalException;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.util.PropsValues;
@@ -77,6 +78,16 @@ public class PolitactiveAssetEntryServiceImpl extends AssetEntryServiceImpl {
         List<AssetEntry> entries = assetEntryLocalService.getEntries(
                 entryQuery);
 
+        results = getObjects(entryQuery, end, start, entries);
+
+        threadLocalCache.put(key, results);
+
+        return (Integer)results[1];
+
+    }
+
+    private Object[] getObjects(AssetEntryQuery entryQuery, int end, int start, List<AssetEntry> entries) throws PrincipalException {
+        Object[] results;
         List<AssetEntry> filteredEntries = null;
         int filteredEntriesCount = 0;
 
@@ -133,14 +144,8 @@ public class PolitactiveAssetEntryServiceImpl extends AssetEntryServiceImpl {
         }
 
         results = new Object[] {filteredEntries, filteredEntriesCount};
-
-        threadLocalCache.put(key, results);
-
-        return (Integer)results[1];
-
+        return results;
     }
-
-
 
 
     @Override
@@ -191,62 +196,7 @@ public class PolitactiveAssetEntryServiceImpl extends AssetEntryServiceImpl {
         List<AssetEntry> entries = assetEntryLocalService.getEntries(
                 entryQuery);
 
-        List<AssetEntry> filteredEntries = null;
-        int filteredEntriesCount = 0;
-
-        if (entryQuery.isEnablePermissions()) {
-            PermissionChecker permissionChecker = getPermissionChecker();
-
-            filteredEntries = new ArrayList<AssetEntry>();
-
-            for (AssetEntry entry : entries) {
-                String className = entry.getClassName();
-                long classPK = entry.getClassPK();
-
-                AssetRendererFactory assetRendererFactory =
-                        AssetRendererFactoryRegistryUtil.
-                                getAssetRendererFactoryByClassName(className);
-
-                try {
-                    if (assetRendererFactory.hasPermission(
-                            permissionChecker, classPK, ActionKeys.VIEW)) {
-
-                        filteredEntries.add(entry);
-                    }
-                }
-                catch (Exception e) {
-                }
-
-                if ((end != QueryUtil.ALL_POS) &&
-                        (filteredEntries.size() > end)) {
-
-                    break;
-                }
-            }
-
-            filteredEntriesCount = filteredEntries.size();
-
-            if ((end != QueryUtil.ALL_POS) && (start != QueryUtil.ALL_POS)) {
-                if (end > filteredEntriesCount) {
-                    end = filteredEntriesCount;
-                }
-
-                if (start > filteredEntriesCount) {
-                    start = filteredEntriesCount;
-                }
-
-                filteredEntries = filteredEntries.subList(start, end);
-            }
-
-            entryQuery.setEnd(end);
-            entryQuery.setStart(start);
-        }
-        else {
-            filteredEntries = entries;
-            filteredEntriesCount = filteredEntries.size();
-        }
-
-        results = new Object[] {filteredEntries, filteredEntriesCount};
+        results = getObjects(entryQuery, end, start, entries);
 
         threadLocalCache.put(key, results);
 
