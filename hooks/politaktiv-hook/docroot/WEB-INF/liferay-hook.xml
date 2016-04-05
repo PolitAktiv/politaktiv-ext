@@ -10,9 +10,5 @@
 
     <custom-jsp-dir>/WEB-INF/custom_jsps</custom-jsp-dir>
 
-    <service>
-        <service-type>com.liferay.portlet.asset.service.AssetEntryLocalService</service-type>
-        <service-impl>org.politactiv.hook.PolitactiveAssetEntryLocalServiceImpl</service-impl>
-    </service>
 
 </hook>
