@@ -19,6 +19,8 @@
 <%
 Boolean enableSorting = PrefsParamUtil.getBoolean(portletPreferences, request, "enableSorting");
 String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "dateForSorting", "");
+String portletId = portletDisplay.getRootPortletId();
+String portletStorageKey = "categoriesNavigation_" + portletId + "_";
 
     long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplateId(displayStyleGroupId, displayStyle);
 %>
@@ -48,8 +50,10 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
     <c:otherwise>
 
         <c:if test="<%= enableSorting %>">
-            <div class="categories-nav-partition-header btn"><liferay-ui:message key="portlet.categoriesNavigation.sorting" /></div>
-            <div class="asset-categories-sorting categories-nav-partition-content toggler-content-collapsed">
+            <div class="asset-categories-sorting-header partition-toggler-header btn">
+                <liferay-ui:message key="portlet.categoriesNavigation.sorting" />
+            </div>
+            <div class="asset-categories-sorting toggler-content-collapsed">
                 <liferay-ui:message key="portlet.categoriesNavigation.sorting.sortBy" />
                 <%
                     String field = ParamUtil.getString(request, "sortingField");
@@ -113,12 +117,12 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
                 <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
                 <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if></a>
                 <style>
-                    .btn.categories-nav-partition-header {
+                    .btn.partition-toggler-header {
                         display: block;
                         text-align: left;
                         margin-bottom: 10px;
                     }
-                    .btn.categories-nav-partition-header.toggler-header-expanded {
+                    .btn.partition-toggler-header.toggler-header-expanded {
                         text-decoration: none;
                         background-position: 0 -15px;
                         background-color: #eaeaea;
@@ -145,20 +149,32 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
                     }
                 </style>
                 <aui:script use="aui-toggler">
-                    new A.TogglerDelegate({
-                        closeAllOnExpand: false,
-                        container: '.categories-nav-container',
-                        header: '.categories-nav-partition-header',
-                        content: '.categories-nav-partition-content',
-                        expanded: false
+                    new A.Toggler({
+                        header: '.asset-categories-sorting-header',
+                        content: '.asset-categories-sorting',
+                        expanded: sessionStorage.<%= portletStorageKey %>sortingExpanded === "true"
+                    }).on('expandedChange', function(event) {
+                        console.log('sorting', event.newVal);
+                        sessionStorage.<%= portletStorageKey %>sortingExpanded = event.newVal;
+                    });
+
+                    new A.Toggler({
+                        header: '.asset-categories-filtering-header',
+                        content: '.asset-categories-filtering',
+                        expanded: sessionStorage.<%= portletStorageKey %>filteringExpanded === "true"
+                    }).on('expandedChange', function(event) {
+                        console.log('filtering', event.newVal);
+                        sessionStorage.<%= portletStorageKey %>filteringExpanded = event.newVal;
                     });
                 </aui:script>
             </div>
         </c:if>
 
         <c:if test="<%= enableSorting %>">
-            <div class="categories-nav-partition-header btn"><liferay-ui:message key="portlet.categoriesNavigation.filtering" /></div>
-            <div class="categories-nav-partition-content toggler-content-collapsed">
+            <div class="asset-categories-filtering-header partition-toggler-header btn">
+                <liferay-ui:message key="portlet.categoriesNavigation.filtering" />
+            </div>
+            <div class="asset-categories-filtering toggler-content-collapsed">
         </c:if>
 
                 <c:choose>
