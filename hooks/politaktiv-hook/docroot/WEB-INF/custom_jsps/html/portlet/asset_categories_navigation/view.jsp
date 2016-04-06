@@ -146,7 +146,7 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
                 </style>
                 <aui:script use="aui-toggler">
                     new A.TogglerDelegate({
-                        closeAllOnExpand: true,
+                        closeAllOnExpand: false,
                         container: '.categories-nav-container',
                         header: '.categories-nav-partition-header',
                         content: '.categories-nav-partition-content',
