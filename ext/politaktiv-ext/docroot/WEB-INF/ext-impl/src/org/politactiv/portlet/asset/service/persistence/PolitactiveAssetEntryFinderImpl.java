@@ -106,7 +106,7 @@ public class PolitactiveAssetEntryFinderImpl
             sb.append("AssetEntry.userId)");
         }
 
-        if(entryQuery.getOrderByCol1().equals("categoryName")){
+        if(entryQuery.getOrderByCol1().startsWith("categoryName")){
             sb.append(" LEFT JOIN ");
             sb.append("AssetEntries_AssetCategories ON ");
             sb.append("(AssetEntries_AssetCategories.entryId = ");
@@ -115,7 +115,13 @@ public class PolitactiveAssetEntryFinderImpl
             sb.append(" LEFT JOIN ");
             sb.append("AssetCategory ON ");
             sb.append("(AssetCategory.categoryId = ");
-            sb.append("AssetEntries_AssetCategories.categoryId)");
+            sb.append("AssetEntries_AssetCategories.categoryId) ");
+            String vocabularyId = entryQuery.getOrderByCol1().replace("categoryName:", "");
+            if(!vocabularyId.isEmpty()){
+                sb.append(" AND (AssetCategory.vocabularyId = ");
+                sb.append(vocabularyId);
+                sb.append(") ");
+            }
         }
 
 
@@ -219,7 +225,7 @@ public class PolitactiveAssetEntryFinderImpl
             }else if(entryQuery.getOrderByCol1().equals("lastName")){
                 sb.append("User_.");
                 sb.append(entryQuery.getOrderByCol1());
-            }else if(entryQuery.getOrderByCol1().equals("categoryName")){
+            }else if(entryQuery.getOrderByCol1().startsWith("categoryName")){
                 sb.append("AssetCategory.name");
             }else {
                 sb.append("AssetEntry.");

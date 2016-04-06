@@ -19,6 +19,7 @@
 <%
 Boolean enableSorting = PrefsParamUtil.getBoolean(portletPreferences, request, "enableSorting");
 String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "dateForSorting", "");
+String vocabularyIdSorting = PrefsParamUtil.getString(portletPreferences, request, "vocabularyIdSorting", "");
 String portletId = portletDisplay.getRootPortletId();
 String portletStorageKey = "categoriesNavigation_" + portletId + "_";
 
@@ -99,8 +100,8 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
                 <c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
                 </a>
                 <%
-                    portletURL.setParameter("sortingField", "categoryName");
-                    if (field.equals("categoryName") && type.equals("ASC")) {
+                    portletURL.setParameter("sortingField", "categoryName:"+vocabularyIdSorting);
+                    if (field.startsWith("categoryName") && type.equals("ASC")) {
                         portletURL.setParameter("sortingType", "DESC");
                     } else {
                         portletURL.setParameter("sortingType", "ASC");
@@ -108,14 +109,14 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
                 %>
                 <a href="<%= HtmlUtil.escape(portletURL.toString()) %>"
                    class="asset-categories-sorting-type
-                            <c:if test="<%= field.equals(\"categoryName\") %>">active</c:if>
-                            <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"ASC\") %>">asc</c:if>
-                            <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"DESC\") %>">desc</c:if>
+                            <c:if test="<%= field.startsWith(\"categoryName\") %>">active</c:if>
+                            <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"ASC\") %>">asc</c:if>
+                            <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"DESC\") %>">desc</c:if>
                         "
                 >
                 <liferay-ui:message key="portlet.categoriesNavigation.sorting.category" />
-                <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
-                <c:if test="<%= field.equals(\"categoryName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if></a>
+                <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
+                <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if></a>
                 <style>
                     .btn.partition-toggler-header {
                         display: block;

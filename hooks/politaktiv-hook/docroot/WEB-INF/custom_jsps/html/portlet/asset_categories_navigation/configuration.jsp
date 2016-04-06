@@ -1,3 +1,4 @@
+<%@ taglib prefix="aui" uri="http://liferay.com/tld/aui" %>
 <%--
 /**
  * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
@@ -20,6 +21,7 @@
 String redirect = ParamUtil.getString(request, "redirect");
 Boolean enableSorting = PrefsParamUtil.getBoolean(portletPreferences, request, "enableSorting");
 String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "dateForSorting", "");
+String vocabularyIdSorting = PrefsParamUtil.getString(portletPreferences, request, "vocabularyIdSorting", "");
 
 %>
 
@@ -43,11 +45,26 @@ String dateForSorting = PrefsParamUtil.getString(portletPreferences, request, "d
 			<aui:option label="publish-date" selected='<%= dateForSorting.equals("publishDate") %>' value="publishDate" />
 			<aui:option label="expiration-date" selected='<%= dateForSorting.equals("expirationDate") %>' value="expirationDate" />
 		</aui:select>
+		<%
+			Set<Long> availableAssetVocabularyIdsSet = SetUtil.fromArray(availableAssetVocabularyIds);
+		%>
+		<aui:select label="vocabulary-sorting" name="preferences--vocabularyIdSorting--">
+
+			<%
+				for (long id:availableAssetVocabularyIdsSet) {
+				%>
+					<aui:option label="<%= _getTitle(AssetVocabularyLocalServiceUtil.getVocabulary(id),themeDisplay)%>" value="<%= id%>" selected="<%= vocabularyIdSorting.equals(String.valueOf(id))%>" />
+				<%
+				}
+			%>
+
+
+		</aui:select>
+
 
 		<aui:input name="preferences--assetVocabularyIds--" type="hidden" />
 
 		<%
-		Set<Long> availableAssetVocabularyIdsSet = SetUtil.fromArray(availableAssetVocabularyIds);
 
 		// Left list
 
