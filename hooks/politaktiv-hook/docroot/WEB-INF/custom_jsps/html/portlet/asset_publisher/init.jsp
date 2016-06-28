@@ -263,7 +263,7 @@ String socialBookmarksDisplayStyle = portletPreferences.getValue("socialBookmark
 String socialBookmarksDisplayPosition = portletPreferences.getValue("socialBookmarksDisplayPosition", "bottom");
 
 String defaultMetadataFields = StringPool.BLANK;
-String allMetadataFields = "createDate,modifiedDate,publishDate,expirationDate,priority,author,view-count,categories,tags";
+String allMetadataFields = "create-date,modified-date,publish-date,expiration-date,priority,author,view-count,categories,tags";
 
 String[] metadataFields = StringUtil.split(portletPreferences.getValue("metadataFields", defaultMetadataFields));
 
