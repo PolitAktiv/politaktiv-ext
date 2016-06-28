@@ -37,29 +37,10 @@ String vocabularyIdSorting = PrefsParamUtil.getString(portletPreferences, reques
 			<aui:option label="filter[action]" selected="<%= !allAssetVocabularies %>" value="<%= false %>" />
 		</aui:select>
 
-		<aui:input label="enable-sorting" name="preferences--enableSorting--" type="checkbox" value="<%= enableSorting %>" />
 
-		<aui:select inlineField="<%= true %>" inlineLabel="left" label="date-for-sorting" name="preferences--dateForSorting--">
-			<aui:option label="create-date" selected='<%= dateForSorting.equals("createDate") %>' value="createDate" />
-			<aui:option label="modified-date" selected='<%= dateForSorting.equals("modifiedDate") %>' value="modifiedDate" />
-			<aui:option label="publish-date" selected='<%= dateForSorting.equals("publishDate") %>' value="publishDate" />
-			<aui:option label="expiration-date" selected='<%= dateForSorting.equals("expirationDate") %>' value="expirationDate" />
-		</aui:select>
 		<%
 			Set<Long> availableAssetVocabularyIdsSet = SetUtil.fromArray(availableAssetVocabularyIds);
 		%>
-		<aui:select label="vocabulary-sorting" name="preferences--vocabularyIdSorting--">
-
-			<%
-				for (long id:availableAssetVocabularyIdsSet) {
-				%>
-					<aui:option label="<%= _getTitle(AssetVocabularyLocalServiceUtil.getVocabulary(id),themeDisplay)%>" value="<%= id%>" selected="<%= vocabularyIdSorting.equals(String.valueOf(id))%>" />
-				<%
-				}
-			%>
-
-
-		</aui:select>
 
 
 		<aui:input name="preferences--assetVocabularyIds--" type="hidden" />
@@ -127,6 +108,30 @@ String vocabularyIdSorting = PrefsParamUtil.getString(portletPreferences, reques
 				showEmptyOption="<%= true %>"
 			/>
 		</div>
+
+		<aui:input label="enable-sorting" name="preferences--enableSorting--" type="checkbox" value="<%= enableSorting %>" />
+
+		<aui:select inlineField="<%= true %>" inlineLabel="left" label="date-for-sorting" name="preferences--dateForSorting--">
+			<aui:option label="create-date" selected='<%= dateForSorting.equals("createDate") %>' value="createDate" />
+			<aui:option label="modified-date" selected='<%= dateForSorting.equals("modifiedDate") %>' value="modifiedDate" />
+			<aui:option label="publish-date" selected='<%= dateForSorting.equals("publishDate") %>' value="publishDate" />
+			<aui:option label="expiration-date" selected='<%= dateForSorting.equals("expirationDate") %>' value="expirationDate" />
+		</aui:select>
+
+		<aui:select label="vocabulary-sorting" name="preferences--vocabularyIdSorting--">
+
+			<%
+				for (long id:availableAssetVocabularyIdsSet) {
+			%>
+			<aui:option label="<%= _getTitle(AssetVocabularyLocalServiceUtil.getVocabulary(id),themeDisplay)%>" value="<%= id%>" selected="<%= vocabularyIdSorting.equals(String.valueOf(id))%>" />
+			<%
+				}
+			%>
+
+
+		</aui:select>
+
+
 	</aui:fieldset>
 
 	<aui:button-row>

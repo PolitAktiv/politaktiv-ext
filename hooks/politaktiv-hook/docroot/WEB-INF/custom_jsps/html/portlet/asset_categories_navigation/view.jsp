@@ -51,6 +51,47 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
     <c:otherwise>
 
         <c:if test="<%= enableSorting %>">
+            <div class="asset-categories-filtering-header partition-toggler-header btn">
+                    <liferay-ui:message key="portlet.categoriesNavigation.filtering" />
+            </div>
+            <aui:script use="aui-toggler">
+                new A.Toggler({
+                header: '.asset-categories-filtering-header',
+                content: '.asset-categories-filtering',
+                expanded: sessionStorage.<%= portletStorageKey %>filteringExpanded === "true"
+                }).on('expandedChange', function(event) {
+                console.log('filtering', event.newVal);
+                sessionStorage.<%= portletStorageKey %>filteringExpanded = event.newVal;
+                });
+            </aui:script>
+            <div class="asset-categories-filtering toggler-content-collapsed"/>
+        </c:if>
+
+        <c:choose>
+            <c:when test="<%= allAssetVocabularies %>">
+                <liferay-ui:asset-categories-navigation
+                        hidePortletWhenEmpty="<%= true %>"
+                />
+            </c:when>
+            <c:otherwise>
+                <liferay-ui:asset-categories-navigation
+                        hidePortletWhenEmpty="<%= true %>"
+                        vocabularyIds="<%= assetVocabularyIds %>"
+                />
+            </c:otherwise>
+        </c:choose>
+
+        <c:if test="<%= enableSorting %>">
+            </div>
+        </c:if>
+
+
+    </c:otherwise>
+
+</c:choose>
+
+
+    <c:if test="<%= enableSorting %>">
             <div class="asset-categories-sorting-header partition-toggler-header btn">
                 <liferay-ui:message key="portlet.categoriesNavigation.sorting" />
             </div>
@@ -95,9 +136,9 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
                             <c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>">desc</c:if>
                         "
                 >
-                <liferay-ui:message key="portlet.categoriesNavigation.sorting.author" />
-                <c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
-                <c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
+                    <liferay-ui:message key="portlet.categoriesNavigation.sorting.author" />
+                    <c:if test="<%= field.equals(\"lastName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
+                    <c:if test="<%= field.equals(\"lastName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if>
                 </a>
                 <%
                     portletURL.setParameter("sortingField", "categoryName:"+vocabularyIdSorting);
@@ -114,9 +155,9 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
                             <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"DESC\") %>">desc</c:if>
                         "
                 >
-                <liferay-ui:message key="portlet.categoriesNavigation.sorting.category" />
-                <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
-                <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if></a>
+                    <liferay-ui:message key="portlet.categoriesNavigation.sorting.category" />
+                    <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"ASC\") %>"><span class="icon-arrow-down"></span></c:if>
+                    <c:if test="<%= field.startsWith(\"categoryName\") && type.equals(\"DESC\") %>"><span class="icon-arrow-up"></span></c:if></a>
                 <style>
                     .btn.partition-toggler-header {
                         display: block;
@@ -159,43 +200,12 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
                         sessionStorage.<%= portletStorageKey %>sortingExpanded = event.newVal;
                     });
 
-                    new A.Toggler({
-                        header: '.asset-categories-filtering-header',
-                        content: '.asset-categories-filtering',
-                        expanded: sessionStorage.<%= portletStorageKey %>filteringExpanded === "true"
-                    }).on('expandedChange', function(event) {
-                        console.log('filtering', event.newVal);
-                        sessionStorage.<%= portletStorageKey %>filteringExpanded = event.newVal;
-                    });
                 </aui:script>
             </div>
         </c:if>
 
-        <c:if test="<%= enableSorting %>">
-            <div class="asset-categories-filtering-header partition-toggler-header btn">
-                <liferay-ui:message key="portlet.categoriesNavigation.filtering" />
-            </div>
-            <div class="asset-categories-filtering toggler-content-collapsed">
-        </c:if>
 
-                <c:choose>
-                    <c:when test="<%= allAssetVocabularies %>">
-                        <liferay-ui:asset-categories-navigation
-                                hidePortletWhenEmpty="<%= true %>"
-                                />
-                    </c:when>
-                    <c:otherwise>
-                        <liferay-ui:asset-categories-navigation
-                                hidePortletWhenEmpty="<%= true %>"
-                                vocabularyIds="<%= assetVocabularyIds %>"
-                                />
-                    </c:otherwise>
-                </c:choose>
 
-        <c:if test="<%= enableSorting %>">
-            </div>
-        </c:if>
 
-    </c:otherwise>
-</c:choose>
+
 </div>
