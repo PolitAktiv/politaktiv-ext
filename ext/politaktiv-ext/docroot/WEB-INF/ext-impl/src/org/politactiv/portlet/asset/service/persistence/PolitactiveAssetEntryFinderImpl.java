@@ -115,11 +115,18 @@ public class PolitactiveAssetEntryFinderImpl
             sb.append("(RatingsStats.classPK = AssetEntry.classPK)");
         }
 
-        if(entryQuery.getOrderByCol1().equals("lastName")){
+        if(entryQuery.getOrderByCol1().equals("author")){
             sb.append(" LEFT JOIN ");
-            sb.append("User_ ON ");
-            sb.append("(User_.userId = ");
-            sb.append("AssetEntry.userId)");
+            sb.append("(SELECT a.resourcePrimKey, a.version, a.userName from JournalArticle a "
+            		+ " INNER JOIN (SELECT resourcePrimKey, max(version) AS version "
+            		+ " FROM JournalArticle "
+            		+ " WHERE (displayDate IS NULL OR displayDate < NOW()) AND (expirationDate IS NULL OR expirationDate > NOW())"
+            		+ " GROUP BY articleId ) b "
+            		+ " ON a.resourcePrimKey=b.resourcePrimKey AND a.version=b.version"
+            		+ ")");
+            sb.append("AS JournalArticle ON ");
+            sb.append("(JournalArticle.resourcePrimKey = ");
+            sb.append("AssetEntry.classPk)");
         }
 
         sb.append("WHERE ");
@@ -219,9 +226,8 @@ public class PolitactiveAssetEntryFinderImpl
 
             if (entryQuery.getOrderByCol1().equals("ratings")) {
                 sb.append("RatingsStats.averageScore");
-            } else if (entryQuery.getOrderByCol1().equals("lastName")){
-                sb.append("User_.");
-                sb.append(entryQuery.getOrderByCol1());
+            } else if (entryQuery.getOrderByCol1().equals("author")){
+                sb.append("JournalArticle.userName");
             } else if (entryQuery.getOrderByCol1().startsWith("categoryName")){
                 sb.append("AssetEntry.categoryName");
             } else {
