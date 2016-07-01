@@ -26,6 +26,24 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
     long portletDisplayDDMTemplateId = PortletDisplayTemplateUtil.getPortletDisplayTemplateDDMTemplateId(displayStyleGroupId, displayStyle);
 %>
 <div class="categories-nav-container">
+
+<c:if test="<%= enableSorting %>">
+    <div class="asset-categories-filtering-header partition-toggler-header btn">
+        <liferay-ui:message key="portlet.categoriesNavigation.filtering" />
+    </div>
+    <aui:script use="aui-toggler">
+        new A.Toggler({
+        header: '.asset-categories-filtering-header',
+        content: '.asset-categories-filtering',
+        expanded: sessionStorage.<%= portletStorageKey %>filteringExpanded === "true"
+        }).on('expandedChange', function(event) {
+        console.log('filtering', event.newVal);
+        sessionStorage.<%= portletStorageKey %>filteringExpanded = event.newVal;
+        });
+    </aui:script>
+    <div class="asset-categories-filtering toggler-content-collapsed"/>
+</c:if>
+
 <c:choose>
     <c:when test="<%= portletDisplayDDMTemplateId > 0 %>">
 
@@ -50,23 +68,6 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
     </c:when>
     <c:otherwise>
 
-        <c:if test="<%= enableSorting %>">
-            <div class="asset-categories-filtering-header partition-toggler-header btn">
-                    <liferay-ui:message key="portlet.categoriesNavigation.filtering" />
-            </div>
-            <aui:script use="aui-toggler">
-                new A.Toggler({
-                header: '.asset-categories-filtering-header',
-                content: '.asset-categories-filtering',
-                expanded: sessionStorage.<%= portletStorageKey %>filteringExpanded === "true"
-                }).on('expandedChange', function(event) {
-                console.log('filtering', event.newVal);
-                sessionStorage.<%= portletStorageKey %>filteringExpanded = event.newVal;
-                });
-            </aui:script>
-            <div class="asset-categories-filtering toggler-content-collapsed"/>
-        </c:if>
-
         <c:choose>
             <c:when test="<%= allAssetVocabularies %>">
                 <liferay-ui:asset-categories-navigation
@@ -81,17 +82,17 @@ String portletStorageKey = "categoriesNavigation_" + portletId + "_";
             </c:otherwise>
         </c:choose>
 
-        <c:if test="<%= enableSorting %>">
-            </div>
-        </c:if>
-
 
     </c:otherwise>
 
 </c:choose>
 
+<c:if test="<%= enableSorting %>">
+    </div>
+</c:if>
 
-    <c:if test="<%= enableSorting %>">
+
+<c:if test="<%= enableSorting %>">
             <div class="asset-categories-sorting-header partition-toggler-header btn">
                 <liferay-ui:message key="portlet.categoriesNavigation.sorting" />
             </div>
